@@ -59,18 +59,21 @@ public class MainActivity extends AppCompatActivity {
                 //set up a bufferedreader with the proper inputstream
                 reader = new BufferedReader(new InputStreamReader(in));
 
-                
+                //read the json
                 String line;
                 while((line = reader.readLine()) != null){
                     buffer.append(line + "\n");
                 }
 
+                //if buffer is empty, just return null instead of processing
                 if(buffer == null){
                     return null;
                 }
 
+                //set the result from buffer
                 result = buffer.toString();
 
+                //return the result;
                 return result;
             }
             catch (Exception e){
@@ -78,6 +81,8 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
 
             }
+
+            //close stuff
             finally {
                 if (urlConnection != null) {
                     urlConnection.disconnect();
@@ -91,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            //return blank result
             return result;
 
         }
