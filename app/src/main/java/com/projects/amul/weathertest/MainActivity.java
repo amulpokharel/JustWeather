@@ -1,11 +1,17 @@
 package com.projects.amul.weathertest;
 
+import android.content.Intent;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.Console;
@@ -28,6 +34,48 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //set up location manager + check if enabled
+        LocationManager location = (LocationManager) getSystemService(LOCATION_SERVICE);
+        boolean enabled = location.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        int lng = 0, lat = 0;
+
+        //prompt user to enable
+        if(!enabled){
+            Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            startActivity(intent);
+        }
+        try {
+            Location loc = location.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            lng = (int)loc.getLongitude();
+            lat = (int)loc.getLatitude();
+        }
+        catch(SecurityException e)
+        {
+
+        }
+        catch(Exception e){
+
+        }
+
+        String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Integer.toString(lat) + "&lon=" + Integer.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e";
+
+        Log.i("Log", urlText);
+        String result ="";
+        JSONObject json;
+
+        DownloadTask dt = new DownloadTask();
+        try {
+            result = dt.execute(urlText).get();
+            json = new JSONObject(result);
+
+            Log.i("Log", result);
+        }
+        catch (Exception e)
+        {
+            Log.e("stuff happened", "stuff!");
+        }
+
 
     }
 
