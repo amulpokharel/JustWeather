@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private int lng = 0;
     private int lat = 0;
+    private double temp = 0;
 
 
     @Override
@@ -103,9 +104,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             mainObj = json.getJSONObject("main");
 
             //set text to textview
-            double temp = Double.parseDouble(mainObj.getString("temp"));
+            temp = Double.parseDouble(mainObj.getString("temp"));
+            temp = Math.round((temp -273.15)*100.0)/100.0;
             
-            weatherText.setText(mainObj.getString("temp"));
+            weatherText.setText(Double.toString(temp) + "°C");
 
             //set image request URL
             icon = "http://openweathermap.org/img/w/" + weatherObj.getString("icon") + ".png";
