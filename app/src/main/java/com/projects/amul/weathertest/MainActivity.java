@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -32,11 +34,12 @@ import java.net.URL;
 import butterknife.BindView;
 
 import static com.projects.amul.weathertest.R.id.weatherText;
+import static com.projects.amul.weathertest.R.string.w01d;
 
 public class MainActivity extends AppCompatActivity implements LocationListener {
 
-    private int lng = 0;
-    private int lat = 0;
+    private double lng = 0;
+    private double lat = 0;
     private double temp = 0;
 
 
@@ -47,8 +50,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         setContentView(R.layout.activity_main);
 
         //initialize textview and imageview
-        ImageView imageView = (ImageView) findViewById(R.id.weatherIcon);
+        TextView iconView = (TextView) findViewById(R.id.weatherIcon);
         TextView weatherText = (TextView) findViewById(R.id.weatherText);
+
+        iconView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/weather.ttf"));
+
 
         //set up location manager + check if enabled
         LocationManager location = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
@@ -69,8 +75,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         location.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
         try {
             Location loc = location.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-            lng = (int)loc.getLongitude();
-            lat = (int)loc.getLatitude();
+            lng = loc.getLongitude();
+            lat = loc.getLatitude();
         }
         catch(SecurityException e)
         {
@@ -81,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         }
 
         //set up the request URL based on long/lat
-        String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Integer.toString(lat) + "&lon=" + Integer.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e";
+        String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e";
 
 //        Log.i("Log", urlText);
 
@@ -106,16 +112,23 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             //set text to textview
             temp = Double.parseDouble(mainObj.getString("temp"));
             temp = Math.round((temp -273.15)*100.0)/100.0;
-            
+            setTitle(json.getString("name"));
+
+            // add the latter bit
             weatherText.setText(Double.toString(temp) + "°C");
 
-            //set image request URL
-            icon = "http://openweathermap.org/img/w/" + weatherObj.getString("icon") + ".png";
 
-            //load URL with picasso
-            Picasso.with(this).load(icon).resize(200,200).into(imageView);
+            //get resource based on weather
+            icon = "w" + weatherObj.getString("icon");
+            int resourceID = getApplicationContext().getResources().getIdentifier(icon, "string", getPackageName());
 
-            //Log.i("Log", result);
+            // set the correct icon from resourceid, otherwise set to ?
+            if(resourceID != 0) {
+                iconView.setText(getString(resourceID));
+            }
+            else{
+                iconView.setText("?");
+            }
         }
         catch (Exception e)
         {

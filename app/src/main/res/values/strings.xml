@@ -1,3 +1,23 @@
 <resources>
     <string name="app_name">WeatherTest</string>
+    <string name="w01d"></string>
+    <string name="w02d"></string>
+    <string name="w03d"></string>
+    <string name="w04d"></string>
+    <string name="w09d"></string>
+    <string name="w010d"></string>
+    <string name="w011d"></string>
+    <string name="w013d"></string>
+    <string name="w015d"></string>
+
+    <string name="w01n"></string>
+    <string name="w02n"></string>
+    <string name="w03n"></string>
+    <string name="w04n"></string>
+    <string name="w09n"></string>
+    <string name="w010n"></string>
+    <string name="w011n"></string>
+    <string name="w013n"></string>
+    <string name="w015n"></string>
+
 </resources>
