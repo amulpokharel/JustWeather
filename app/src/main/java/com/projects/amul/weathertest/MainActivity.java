@@ -71,9 +71,9 @@ public class MainActivity extends AppCompatActivity {
             weather = gson.fromJson(result, WeatherObj.class);
 
             //set text to textview
-            weatherText.setText(Double.toString(weather.getMain().getTemp()) + "°C");
-            maxTemp.setText("High: " + Double.toString(weather.getMain().getTempMax()) + "°C");
-            minTemp.setText("Low: " + Double.toString(weather.getMain().getTempMin()) + "°C");
+            weatherText.setText(Integer.toString((weather.getMain().getTemp().intValue())) + "°C");
+            maxTemp.setText(" ▴" + Integer.toString((weather.getMain().getTempMax().intValue())) + "°C");
+            minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
             locationName.setText(weather.getName());
 
             //get resource based on weather

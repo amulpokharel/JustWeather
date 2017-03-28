@@ -24,24 +24,25 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33"
+        app:layout_constraintVertical_bias="0.378"
         app:srcCompat="?android:attr/textCheckMark"
-        tools:text="?"
-        app:layout_constraintHorizontal_bias="0.047" />
+        tools:text="?" />
 
     <TextView
         android:id="@+id/weatherText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="89dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="357dp"
         android:text="temp"
         android:textAlignment="center"
         android:textColor="@color/textColorPrimary"
         android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent" />
 
     <ImageView
         android:id="@+id/locationIcon"
@@ -72,28 +73,30 @@
         android:id="@+id/maxTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:textColor="@color/textColorPrimary"
+        android:layout_marginRight="117dp"
+        android:layout_marginTop="357dp"
         android:text="Max"
-        app:layout_constraintHorizontal_bias="0.041"
-        app:layout_constraintLeft_toRightOf="@+id/weatherText"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="124dp" />
+        app:layout_constraintLeft_toRightOf="@+id/weatherText"
+        android:layout_marginLeft="8dp" />
 
     <TextView
         android:id="@+id/minTemp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="41dp"
-        android:layout_marginTop="2dp"
-        android:textColor="@color/textColorPrimary"
+        android:layout_marginRight="117dp"
+        android:layout_marginTop="378dp"
         android:text="Min"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/maxTemp"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toRightOf="@+id/weatherText"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintHorizontal_bias="0.044" />
+        android:layout_marginLeft="8dp"/>
 
 </android.support.constraint.ConstraintLayout>
