@@ -5,19 +5,19 @@
     <string name="w03d"></string>
     <string name="w04d"></string>
     <string name="w09d"></string>
-    <string name="w010d"></string>
-    <string name="w011d"></string>
-    <string name="w013d"></string>
-    <string name="w015d"></string>
+    <string name="w10d"></string>
+    <string name="w11d"></string>
+    <string name="w13d"></string>
+    <string name="w15d"></string>
 
     <string name="w01n"></string>
     <string name="w02n"></string>
     <string name="w03n"></string>
     <string name="w04n"></string>
     <string name="w09n"></string>
-    <string name="w010n"></string>
-    <string name="w011n"></string>
-    <string name="w013n"></string>
-    <string name="w015n"></string>
+    <string name="w10n"></string>
+    <string name="w11n"></string>
+    <string name="w13n"></string>
+    <string name="w15n"></string>
 
 </resources>
