@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 iconView.setText("?");
-                Log.i("Info", icon);
-                Log.i("Info", Integer.toString(resourceID));
+                //Log.i("Info", icon);
+                //Log.i("Info", Integer.toString(resourceID));
             }
         }
         catch (Exception e)
