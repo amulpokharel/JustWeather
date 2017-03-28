@@ -4,6 +4,7 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.projects.amul.weathertest.data.WeatherObj;
@@ -24,11 +25,18 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
+    @BindView(R.id.locationName) TextView locationName;
+    @BindView(R.id.maxTemp) TextView maxTemp;
+    @BindView(R.id.minTemp) TextView minTemp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        //Remove notification bar
+        //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
         //set up the request URL based on long/lat
         String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
 
-        //Log.i("Log", urlText);
+        Log.i("Log", urlText);
 
         //set up download task
         DownloadTask dt = new DownloadTask();
@@ -62,8 +70,10 @@ public class MainActivity extends AppCompatActivity {
             weather = gson.fromJson(result, WeatherObj.class);
 
             //set text to textview
-            setTitle(weather.getName());
             weatherText.setText(Double.toString(weather.getMain().getTemp()) + "°C");
+            maxTemp.setText("High: " + Double.toString(weather.getMain().getTempMax()) + "°C");
+            minTemp.setText("Low: " + Double.toString(weather.getMain().getTempMin()) + "°C");
+            locationName.setText(weather.getName());
 
             //get resource based on weather
             icon = "w" + weather.getWeather().get(0).getIcon();
@@ -75,11 +85,14 @@ public class MainActivity extends AppCompatActivity {
             }
             else{
                 iconView.setText("?");
+                Log.i("Info", icon);
+                Log.i("Info", Integer.toString(resourceID));
             }
         }
         catch (Exception e)
         {
             Log.e("stuff happened", "stuff!");
+            e.printStackTrace();
         }
     }
 }
