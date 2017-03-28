@@ -4,7 +4,6 @@ import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.WindowManager;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import com.projects.amul.weathertest.data.WeatherObj;
@@ -42,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         //butterknife bind
         ButterKnife.bind(this);
 
+        //set typeface to the weather icon
         iconView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/weather.ttf"));
 
         //set up locationprovider
