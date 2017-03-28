@@ -5,11 +5,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.projects.amul.weathertest.data.WeatherObj;
 import com.projects.amul.weathertest.modules.DownloadTask;
 import com.projects.amul.weathertest.modules.LocationProvider;
+
+import butterknife.BindView;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private String result ="";
     private String icon = "";
 
+    @BindView(R.id.weatherIcon) TextView iconView;
+    @BindView(R.id.weatherText) TextView weatherText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,26 +32,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //initialize textview and imageview
-        TextView iconView = (TextView) findViewById(R.id.weatherIcon);
-        TextView weatherText = (TextView) findViewById(R.id.weatherText);
-
         iconView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/weather.ttf"));
 
         //set up locationprovider
 
         LocationProvider locationProvider = new LocationProvider(getApplicationContext());
 
+        //get long/lat
         lng = locationProvider.getLongitude();
         lat = locationProvider.getLatitude();
 
         //set up the request URL based on long/lat
         String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
 
-        Log.i("Log", urlText);
-
-        //initialize vars for incoming data
-
+        //Log.i("Log", urlText);
 
         //set up download task
         DownloadTask dt = new DownloadTask();
