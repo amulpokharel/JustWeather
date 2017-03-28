@@ -11,8 +11,7 @@ import com.projects.amul.weathertest.modules.DownloadTask;
 import com.projects.amul.weathertest.modules.LocationProvider;
 
 import butterknife.BindView;
-
-
+import butterknife.ButterKnife;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
 
         iconView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/weather.ttf"));
 
