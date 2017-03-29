@@ -8,7 +8,7 @@
     <string name="w10d"></string>
     <string name="w11d"></string>
     <string name="w13d"></string>
-    <string name="w15d"></string>
+    <string name="w50d"></string>
 
     <string name="w01n"></string>
     <string name="w02n"></string>
@@ -18,6 +18,6 @@
     <string name="w10n"></string>
     <string name="w11n"></string>
     <string name="w13n"></string>
-    <string name="w15n"></string>
+    <string name="w50n"></string>
 
 </resources>
