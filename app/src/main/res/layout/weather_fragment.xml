@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,91 +13,138 @@
         android:id="@+id/weatherIcon"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentLeft="false"
-        android:layout_alignParentRight="false"
-        android:layout_alignParentStart="false"
-        android:layout_alignParentTop="false"
-        android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="81dp"
         android:gravity="center"
         android:textAlignment="center"
         android:textColor="@color/textColorPrimary"
         android:textSize="100sp"
         android:textStyle="bold"
         app:srcCompat="?android:attr/textCheckMark"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="102dp"
-        tools:text="?" />
-
-    <TextView
-        android:id="@+id/weatherText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="temp"
-        android:textAlignment="center"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="125dp"
-        tools:layout_editor_absoluteY="343dp"
-        android:layout_below="@+id/weatherIcon"
+        tools:text="?"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="7dp" />
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintVertical_bias="0.262"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp" />
 
-    <ImageView
-        android:id="@+id/locationIcon"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_toLeftOf="@+id/locationName"
-        android:layout_toStartOf="@+id/locationName"
-        android:contentDescription="location icon"
-        android:src="@drawable/ic_location_on_black_24dp"
-        tools:layout_editor_absoluteX="279dp"
-        tools:layout_editor_absoluteY="6dp" />
+    <RelativeLayout
+        android:id="@+id/infoFrame"
+        android:layout_width="200dp"
+        android:layout_height="300dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/weatherIcon"
+        app:layout_constraintVertical_bias="0.0">
 
-    <TextView
-        android:id="@+id/locationName"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:gravity="center"
-        android:text="wha"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="317dp"
-        tools:layout_editor_absoluteY="6dp" />
+        <TextView
+            android:id="@+id/weatherText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="temp"
+            android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_below="@+id/maxTemp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/maxTemp"
-        android:layout_width="22dp"
-        android:layout_height="14dp"
-        android:text="Max"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="163dp"
-        tools:layout_editor_absoluteY="264dp"
-        android:layout_alignTop="@+id/weatherText"
-        android:layout_toRightOf="@+id/weatherText"
-        android:layout_toEndOf="@+id/weatherText" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/weatherText"
+            android:gravity="center"
+            android:textAlignment="center">
 
-    <TextView
-        android:id="@+id/minTemp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Min"
-        android:textColor="@color/textColorPrimary"
-        android:textSize="12sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="689dp"
-        tools:layout_editor_absoluteY="286dp"
-        android:layout_alignBottom="@+id/weatherText"
-        android:layout_toRightOf="@+id/weatherText"
-        android:layout_toEndOf="@+id/weatherText" />
+            <ImageView
+                android:id="@+id/locationIcon"
+                android:layout_width="20dp"
+                android:layout_height="wrap_content"
+                android:contentDescription="location icon"
+                android:src="@drawable/ic_location_on_black_24dp" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/locationName"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="start"
+                android:text="No location"
+                android:textAlignment="textStart"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/humidity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:srcCompat="?android:attr/textCheckMark"
+            tools:text="humidity"
+            android:layout_below="@+id/linearLayout"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp" />
+
+        <TextView
+            android:id="@+id/pressure"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:srcCompat="?android:attr/textCheckMark"
+            tools:text="pressure"
+            android:layout_below="@+id/linearLayout"
+            android:layout_toRightOf="@+id/maxTemp"
+            android:layout_toEndOf="@+id/maxTemp" />
+
+
+        <TextView
+            android:id="@+id/maxTemp"
+            android:layout_width="22dp"
+            android:layout_height="14dp"
+            android:text="Max"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/minTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Min"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone" />
+
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

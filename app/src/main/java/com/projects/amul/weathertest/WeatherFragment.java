@@ -40,6 +40,8 @@ public class WeatherFragment extends Fragment {
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
     @BindView(R.id.locationName) TextView locationName;
+    @BindView(R.id.humidity) TextView humidity;
+    @BindView(R.id.pressure) TextView pressure;
     @BindView(R.id.maxTemp) TextView maxTemp;
     @BindView(R.id.minTemp) TextView minTemp;
 
@@ -65,6 +67,9 @@ public class WeatherFragment extends Fragment {
     }
 
 
+    /**
+     * Runnable thread for updating the weather + acquiring location
+     */
     private Runnable weatherUpdateThread = new Runnable() {
         @Override
         public void run() {
@@ -133,9 +138,11 @@ public class WeatherFragment extends Fragment {
         Gson gson = new Gson();
         weather = gson.fromJson(jsonResult, WeatherObj.class);
 
-        weatherText.setText(Integer.toString((weather.getMain().getTemp().intValue())) + "°C");
-        maxTemp.setText(" ▴" + Integer.toString((weather.getMain().getTempMax().intValue())) + "°C");
-        minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
+        weatherText.setText(Integer.toString((weather.getMain().getTemp().intValue())) + " °C");
+        //maxTemp.setText(" ▴" + Integer.toString((weather.getMain().getTempMax().intValue())) + "°C");
+        //minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
+        humidity.setText("Humidity: " + (Double.toString((weather.getMain().getHumidity().doubleValue())))+" %");
+        pressure.setText("Pressure: " + (Double.toString((weather.getMain().getPressure().doubleValue()))) + " hpa");
         locationName.setText(weather.getName());
 
         icon = "w" + weather.getWeather().get(0).getIcon();
