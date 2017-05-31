@@ -1,4 +1,5 @@
 /**
+ * Main Activity to hold the fragments.
  * Created by Amul on 5/31/17.
  */
 package com.projects.amul.weathertest;
@@ -17,12 +18,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         fm.beginTransaction().replace(R.id.mainFrame, new WeatherFragment()).commit();
-    }
-
-
-    @Override
-    public void setTitle(CharSequence title) {
-        getActionBar().setTitle(title);
     }
 
 }

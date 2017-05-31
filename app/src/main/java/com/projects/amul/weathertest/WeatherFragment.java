@@ -23,6 +23,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
+/**
+ * Fragment that handles the weather operations, along with getting location info from the GPS to
+ * access the relevant information
+ *
+ * @author Amul Pokharel
+ */
+
 public class WeatherFragment extends Fragment {
 
     private WeatherObj weather;
@@ -67,6 +74,9 @@ public class WeatherFragment extends Fragment {
     };
 
 
+    /**
+     * Updates the location after getting the location information. Default lat/long = 0
+     */
     @OnClick(R.id.locationIcon)
     public void updateLocation(){
 
@@ -74,16 +84,6 @@ public class WeatherFragment extends Fragment {
         double lat = 0;
 
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-
-
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_GRANTED);
 
             return;
@@ -91,7 +91,6 @@ public class WeatherFragment extends Fragment {
         else{
             LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
 
-            //get long/lat
             lng = locationProvider.getLongitude();
             lat = locationProvider.getLatitude();
         }
@@ -100,6 +99,11 @@ public class WeatherFragment extends Fragment {
         downloadWeather(lat, lng);
     }
 
+    /**
+     * Method that downloads the weather based on the passed parameters
+     * @param lat Latitude for acquiring weather
+     * @param lng Longitude for acquiring weather
+     */
     private void downloadWeather(double lat, double lng){
         String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
 
@@ -109,8 +113,6 @@ public class WeatherFragment extends Fragment {
         String result ="";
 
         try {
-
-            //resulting json from URL
             result = dt.execute(urlText).get();
             parseAndupdateUI(result);
 
@@ -122,22 +124,23 @@ public class WeatherFragment extends Fragment {
         }
     }
 
+    /**
+     * Parses the result from downloadWeather into revelant fields and updates the UI
+     * @param jsonResult The json result returend by the query from downloadWeather
+     * @see public void downloadWeather(double late, double lng)
+     */
     private void parseAndupdateUI(String jsonResult){
-        //parse json with Gson
         Gson gson = new Gson();
         weather = gson.fromJson(jsonResult, WeatherObj.class);
 
-        //set text to textview
         weatherText.setText(Integer.toString((weather.getMain().getTemp().intValue())) + "°C");
         maxTemp.setText(" ▴" + Integer.toString((weather.getMain().getTempMax().intValue())) + "°C");
         minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
         locationName.setText(weather.getName());
 
-        //get resource based on weather
         icon = "w" + weather.getWeather().get(0).getIcon();
         int resourceID = getActivity().getApplicationContext().getResources().getIdentifier(icon, "string", getActivity().getPackageName());
 
-        // set the correct icon from resourceid, otherwise set to ?
         if(resourceID != 0) {
             iconView.setText(getString(resourceID));
         }
@@ -149,17 +152,19 @@ public class WeatherFragment extends Fragment {
     }
 
     @Override
+    /**
+     * Function that runs when permission is requested to re-run the needed operations
+     * instead of aborting
+     */
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_GRANTED: {
-                // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                     LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
 
-                    //get long/lat
                     downloadWeather(locationProvider.getLatitude(), locationProvider.getLongitude());
 
                 } else {
@@ -167,9 +172,6 @@ public class WeatherFragment extends Fragment {
                 }
                 return;
             }
-
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
