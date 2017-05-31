@@ -3,6 +3,7 @@ package com.projects.amul.weathertest;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
 
     private WeatherObj weather;
     private String icon = "";
+    private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
 
     @BindView(R.id.weatherIcon) TextView iconView;
@@ -40,15 +42,21 @@ public class MainActivity extends AppCompatActivity {
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_main);
 
-        //butterknife bind
         ButterKnife.bind(this);
 
-        //set typeface to the weather icon
         iconView.setTypeface(Typeface.createFromAsset(getAssets(), "fonts/weather.ttf"));
+        handler.postDelayed(weatherUpdateThread, 0L);
 
-        //update function
-        updateLocation();
     }
+
+
+    private Runnable weatherUpdateThread = new Runnable() {
+        @Override
+        public void run() {
+            updateLocation();
+            handler.removeCallbacks(weatherUpdateThread);
+        }
+    };
 
 
     @OnClick(R.id.locationIcon)
@@ -85,16 +93,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void downloadWeather(double lat, double lng){
-        //set up the request URL based on long/lat
         String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
 
         Log.i("URL", urlText);
 
-        //set up download task
         DownloadTask dt = new DownloadTask();
         String result ="";
 
-        //get data, parse, get important data
         try {
 
             //resulting json from URL
@@ -159,4 +164,5 @@ public class MainActivity extends AppCompatActivity {
             // permissions this app might request
         }
     }
+
 }
