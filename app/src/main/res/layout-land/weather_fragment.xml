@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    tools:context="com.projects.amul.weathertest.MainActivity"
+    tools:layout_editor_absoluteY="25dp"
+    tools:layout_editor_absoluteX="0dp">
+
+    <TextView
+        android:id="@+id/weatherIcon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="100sp"
+        android:textStyle="bold"
+        app:srcCompat="?android:attr/textCheckMark"
+        tools:layout_editor_absoluteX="60dp"
+        tools:layout_editor_absoluteY="102dp"
+        tools:text="?"
+        android:layout_below="@+id/locationIcon"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="27dp"
+        android:layout_marginStart="27dp" />
+
+    <TextView
+        android:id="@+id/weatherText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="temp"
+        android:textAlignment="center"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="125dp"
+        tools:layout_editor_absoluteY="343dp"
+        android:layout_marginTop="31dp"
+        android:layout_alignTop="@+id/weatherIcon"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/locationIcon"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_toLeftOf="@+id/locationName"
+        android:layout_toStartOf="@+id/locationName"
+        android:contentDescription="location icon"
+        android:src="@drawable/ic_location_on_black_24dp"
+        tools:layout_editor_absoluteX="279dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/locationName"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:text="wha"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="317dp"
+        tools:layout_editor_absoluteY="6dp" />
+
+    <TextView
+        android:id="@+id/maxTemp"
+        android:layout_width="22dp"
+        android:layout_height="14dp"
+        android:text="Max"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="163dp"
+        tools:layout_editor_absoluteY="264dp"
+        android:layout_alignTop="@+id/weatherText"
+        android:layout_toRightOf="@+id/weatherText"
+        android:layout_toEndOf="@+id/weatherText" />
+
+    <TextView
+        android:id="@+id/minTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Min"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="689dp"
+        tools:layout_editor_absoluteY="286dp"
+        android:layout_alignBottom="@+id/weatherText"
+        android:layout_toRightOf="@+id/weatherText"
+        android:layout_toEndOf="@+id/weatherText" />
+
+</RelativeLayout>
