@@ -1,12 +1,11 @@
 package com.projects.amul.weathertest;
 
 import android.Manifest;
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +19,8 @@ import com.projects.amul.weathertest.modules.LocationProvider;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
+
+import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 
 /**
@@ -36,6 +36,7 @@ public class WeatherFragment extends Fragment {
     private String icon = "";
     private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
+    private static boolean PERMISSION_GRANTED = false;
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
@@ -62,6 +63,7 @@ public class WeatherFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
     }
 
 
@@ -85,8 +87,8 @@ public class WeatherFragment extends Fragment {
         double lng = 0;
         double lat = 0;
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
+        if (checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
 
             Log.d("permission", "checked");
 
@@ -168,6 +170,7 @@ public class WeatherFragment extends Fragment {
             case LOCATION_GRANTED: {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("yay", "permission granted");
 
                     LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
 
@@ -176,6 +179,10 @@ public class WeatherFragment extends Fragment {
                 } else {
                     downloadWeather(27.717245, 85.323960);
                 }
+                return;
+            }
+            default:{
+                Log.d("sry", "nothing happen");
                 return;
             }
         }
