@@ -181,10 +181,6 @@ public class WeatherFragment extends Fragment {
                 }
                 return;
             }
-            default:{
-                Log.d("sry", "nothing happen");
-                return;
-            }
         }
     }
 
