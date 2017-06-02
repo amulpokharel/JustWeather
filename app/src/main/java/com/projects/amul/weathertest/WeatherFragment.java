@@ -36,7 +36,7 @@ public class WeatherFragment extends Fragment {
     private String icon = "";
     private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
-    private static boolean PERMISSION_GRANTED = false;
+    private boolean permission_checked = false;
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
@@ -64,6 +64,14 @@ public class WeatherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        if(savedInstanceState != null) {
+            permission_checked = savedInstanceState.getBoolean("permission check", false);
+        }
+    }
+
+    public void onSaveInstanceState (Bundle outState){
+        outState.putBoolean("permission check", permission_checked);
+        super.onSaveInstanceState(outState);
     }
 
 
@@ -87,12 +95,10 @@ public class WeatherFragment extends Fragment {
         double lng = 0;
         double lat = 0;
 
-        if (checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
+        Log.d("debug", Boolean.toString(permission_checked));
 
-            Log.d("permission", "checked");
-
-            return;
+        if (!permission_checked){
+            checkPermission();
         }
         else{
             LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
@@ -103,6 +109,22 @@ public class WeatherFragment extends Fragment {
 
 
         downloadWeather(lat, lng);
+    }
+
+    /**
+     * Checks permission once per launch
+     */
+
+    private void checkPermission(){
+        if (checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
+
+            Log.d("permission", "checked");
+
+            permission_checked = true;
+
+            return;
+        }
     }
 
     /**
