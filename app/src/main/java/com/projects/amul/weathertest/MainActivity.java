@@ -5,14 +5,14 @@
 package com.projects.amul.weathertest;
 
 
-import android.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
 
 
-public class MainActivity extends AppCompatActivity {
-    FragmentManager fm = getFragmentManager();
+public class MainActivity extends FragmentActivity {
+    FragmentManager fm = getSupportFragmentManager();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
