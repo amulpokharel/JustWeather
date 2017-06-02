@@ -49,46 +49,28 @@
             android:id="@+id/weatherText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:gravity="center"
-            android:text="temp"
+            android:text="0 °C"
             android:textAlignment="center"
             android:textColor="@color/textColorPrimary"
             android:textSize="50sp"
-            android:textStyle="bold"
-            android:layout_below="@+id/maxTemp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:textStyle="bold" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+
+        <TextView
+            android:id="@+id/locationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/weatherText"
+            android:layout_centerHorizontal="true"
+            android:drawableLeft="@drawable/ic_location_on_black_24dp"
             android:gravity="center"
-            android:textAlignment="center">
-
-            <ImageView
-                android:id="@+id/locationIcon"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:contentDescription="location icon"
-                android:src="@drawable/ic_location_on_black_24dp" />
-
-            <TextView
-                android:id="@+id/locationName"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="start"
-                android:text="No location"
-                android:textAlignment="textStart"
-                android:textColor="@color/textColorPrimary"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-
-        </LinearLayout>
-
+            android:text="Acquiring Location.."
+            android:textColor="@color/textColorPrimary"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
 
         <TextView
@@ -102,10 +84,9 @@
             android:textStyle="bold"
             app:srcCompat="?android:attr/textCheckMark"
             tools:text="humidity"
-            android:layout_below="@+id/linearLayout"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="20dp" />
+            android:layout_below="@+id/locationName"/>
 
         <TextView
             android:id="@+id/pressure"
@@ -118,30 +99,9 @@
             android:textStyle="bold"
             app:srcCompat="?android:attr/textCheckMark"
             tools:text="pressure"
-            android:layout_below="@+id/linearLayout"
-            android:layout_toRightOf="@+id/maxTemp"
-            android:layout_toEndOf="@+id/maxTemp" />
-
-
-        <TextView
-            android:id="@+id/maxTemp"
-            android:layout_width="22dp"
-            android:layout_height="14dp"
-            android:text="Max"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/minTemp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Min"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:visibility="gone" />
+            android:layout_below="@+id/humidity"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
 
 
     </RelativeLayout>
