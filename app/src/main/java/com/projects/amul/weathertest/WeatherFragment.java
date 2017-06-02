@@ -42,8 +42,6 @@ public class WeatherFragment extends Fragment {
     @BindView(R.id.locationName) TextView locationName;
     @BindView(R.id.humidity) TextView humidity;
     @BindView(R.id.pressure) TextView pressure;
-    @BindView(R.id.maxTemp) TextView maxTemp;
-    @BindView(R.id.minTemp) TextView minTemp;
 
     public static WeatherFragment newInstance() {
 
@@ -80,16 +78,17 @@ public class WeatherFragment extends Fragment {
 
 
     /**
-     * Updates the location after getting the location information. Default lat/long = 0
+     * Updates the location after getting the location information.
      */
-    @OnClick(R.id.locationIcon)
     public void updateLocation(){
 
         double lng = 0;
         double lat = 0;
 
-        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_GRANTED);
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
+
+            Log.d("permission", "checked");
 
             return;
         }
