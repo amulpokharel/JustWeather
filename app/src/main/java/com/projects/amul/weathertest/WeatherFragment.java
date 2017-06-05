@@ -1,6 +1,9 @@
 package com.projects.amul.weathertest;
 
 import android.Manifest;
+import android.content.Context;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
@@ -11,11 +14,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import com.google.gson.Gson;
 import com.projects.amul.weathertest.data.WeatherObj;
 import com.projects.amul.weathertest.modules.DownloadTask;
-import com.projects.amul.weathertest.modules.LocationProvider;
+
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,13 +40,16 @@ public class WeatherFragment extends Fragment {
     private String icon = "";
     private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
-    private boolean permission_checked = false;
+    private boolean permission_checked;
+    private long last_checked;
+    private final long CHECK_INTERVAL = 60000;
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
     @BindView(R.id.locationName) TextView locationName;
     @BindView(R.id.humidity) TextView humidity;
     @BindView(R.id.pressure) TextView pressure;
+    @BindView(R.id.last_update) TextView last_updated;
 
     public static WeatherFragment newInstance() {
 
@@ -56,6 +63,19 @@ public class WeatherFragment extends Fragment {
         View view = inflater.inflate(R.layout.weather_fragment, container, false);
         ButterKnife.bind(this, view);
         iconView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf"));
+        if(savedInstanceState != null){
+            permission_checked = savedInstanceState.getBoolean("permission check", false);
+            iconView.setText(savedInstanceState.getString("icon"));
+            weatherText.setText(savedInstanceState.getString("temperature"));
+            humidity.setText(savedInstanceState.getString("humidity"));
+            pressure.setText(savedInstanceState.getString("pressure"));
+            last_updated.setText(savedInstanceState.getString("last update"));
+            locationName.setText(savedInstanceState.getString("location"));
+        }
+        else{
+            permission_checked = false;
+            last_checked = 0;
+        }
         handler.postDelayed(weatherUpdateThread, 0L);
         return view;
     }
@@ -64,13 +84,18 @@ public class WeatherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        if(savedInstanceState != null) {
-            permission_checked = savedInstanceState.getBoolean("permission check", false);
-        }
     }
 
     public void onSaveInstanceState (Bundle outState){
         outState.putBoolean("permission check", permission_checked);
+        outState.putLong("last checked", last_checked);
+        outState.putString("icon", iconView.getText().toString());
+        outState.putString("temperature", weatherText.getText().toString());
+        outState.putString("humidity", humidity.getText().toString());
+        outState.putString("pressure", pressure.getText().toString());
+        outState.putString("last update", last_updated.getText().toString());
+        outState.putString("location", locationName.getText().toString());
+
         super.onSaveInstanceState(outState);
     }
 
@@ -81,7 +106,10 @@ public class WeatherFragment extends Fragment {
     private Runnable weatherUpdateThread = new Runnable() {
         @Override
         public void run() {
-            updateLocation();
+            if((last_checked == 0) || ((System.currentTimeMillis() - last_checked) >= CHECK_INTERVAL )) {
+                last_checked = System.currentTimeMillis();
+                updateLocation();
+            }
             handler.removeCallbacks(weatherUpdateThread);
         }
     };
@@ -95,36 +123,19 @@ public class WeatherFragment extends Fragment {
         double lng = 0;
         double lat = 0;
 
-        Log.d("debug", Boolean.toString(permission_checked));
-
-        if (!permission_checked){
-            checkPermission();
+        if ((!permission_checked) || ((checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED))){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
         }
         else{
-            LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
+            LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            lng = locationProvider.getLongitude();
-            lat = locationProvider.getLatitude();
+            lng = loc.getLongitude();
+            lat = loc.getLatitude();
         }
 
 
         downloadWeather(lat, lng);
-    }
-
-    /**
-     * Checks permission once per launch
-     */
-
-    private void checkPermission(){
-        if (checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
-
-            Log.d("permission", "checked");
-
-            permission_checked = true;
-
-            return;
-        }
     }
 
     /**
@@ -166,6 +177,7 @@ public class WeatherFragment extends Fragment {
         //minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
         humidity.setText("Humidity: " + (Double.toString((weather.getMain().getHumidity().doubleValue())))+" %");
         pressure.setText("Pressure: " + (Double.toString((weather.getMain().getPressure().doubleValue()))) + " hpa");
+        last_updated.setText("Last Updated: " + new SimpleDateFormat(("K:mm a, z")).format(new Date(last_checked)));
         locationName.setText(weather.getName());
 
         icon = "w" + weather.getWeather().get(0).getIcon();
@@ -190,13 +202,11 @@ public class WeatherFragment extends Fragment {
                                            String permissions[], int[] grantResults) {
         switch (requestCode) {
             case LOCATION_GRANTED: {
+                permission_checked = true;
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("yay", "permission granted");
-
-                    LocationProvider locationProvider = new LocationProvider(getActivity().getApplicationContext());
-
-                    downloadWeather(locationProvider.getLatitude(), locationProvider.getLongitude());
+                    updateLocation();
 
                 } else {
                     downloadWeather(27.717245, 85.323960);
