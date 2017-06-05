@@ -1,4 +1,4 @@
-package com.projects.amul.weathertest.modules;
+package com.amulp.justweather.modules;
 
 import android.Manifest;
 import android.content.Context;

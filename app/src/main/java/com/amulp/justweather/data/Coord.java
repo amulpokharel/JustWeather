@@ -1,5 +1,5 @@
 
-package com.projects.amul.weathertest.data;
+package com.amulp.justweather.data;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

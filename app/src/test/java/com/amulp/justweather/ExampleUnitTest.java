@@ -1,4 +1,4 @@
-package com.projects.amul.weathertest;
+package com.amulp.justweather;
 
 import org.junit.Test;
 

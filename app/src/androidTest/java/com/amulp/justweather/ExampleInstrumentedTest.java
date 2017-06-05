@@ -1,4 +1,4 @@
-package com.projects.amul.weathertest;
+package com.amulp.justweather;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.projects.amul.weathertest", appContext.getPackageName());
+        assertEquals("com.com.amulp.justweather", appContext.getPackageName());
     }
 }

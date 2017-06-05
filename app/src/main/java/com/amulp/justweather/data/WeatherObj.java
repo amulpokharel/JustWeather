@@ -1,5 +1,5 @@
 
-package com.projects.amul.weathertest.data;
+package com.amulp.justweather.data;
 
 import java.util.List;
 import com.google.gson.annotations.Expose;

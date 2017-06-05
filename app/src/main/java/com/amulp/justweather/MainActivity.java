@@ -2,7 +2,7 @@
  * Main Activity to hold the fragments.
  * Created by Amul on 5/31/17.
  */
-package com.projects.amul.weathertest;
+package com.amulp.justweather;
 
 
 import android.support.v4.app.FragmentActivity;

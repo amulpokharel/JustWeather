@@ -1,4 +1,4 @@
-package com.projects.amul.weathertest;
+package com.amulp.justweather;
 
 import android.Manifest;
 import android.content.Context;
@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.gson.Gson;
-import com.projects.amul.weathertest.data.WeatherObj;
-import com.projects.amul.weathertest.modules.DownloadTask;
+import com.amulp.justweather.data.WeatherObj;
+import com.amulp.justweather.modules.DownloadTask;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
