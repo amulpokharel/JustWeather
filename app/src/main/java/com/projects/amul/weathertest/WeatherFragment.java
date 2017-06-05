@@ -23,6 +23,7 @@ import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
@@ -38,6 +39,8 @@ public class WeatherFragment extends Fragment {
 
     private WeatherObj weather;
     private String icon = "";
+    private int currentTemp = 0;
+    private char currentUnit = 'c';
     private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
     private boolean permission_checked;
@@ -71,6 +74,8 @@ public class WeatherFragment extends Fragment {
             pressure.setText(savedInstanceState.getString("pressure"));
             last_updated.setText(savedInstanceState.getString("last update"));
             locationName.setText(savedInstanceState.getString("location"));
+            currentUnit = savedInstanceState.getChar("current unit", 'c');
+            currentTemp = savedInstanceState.getInt("current temp", 0);
         }
         else{
             permission_checked = false;
@@ -95,6 +100,8 @@ public class WeatherFragment extends Fragment {
         outState.putString("pressure", pressure.getText().toString());
         outState.putString("last update", last_updated.getText().toString());
         outState.putString("location", locationName.getText().toString());
+        outState.putInt("current temp", currentTemp);
+        outState.putChar("current unit", currentUnit);
 
         super.onSaveInstanceState(outState);
     }
@@ -132,11 +139,11 @@ public class WeatherFragment extends Fragment {
 
             lng = loc.getLongitude();
             lat = loc.getLatitude();
+            downloadWeather(lat, lng);
         }
-
-
-        downloadWeather(lat, lng);
     }
+
+
 
     /**
      * Method that downloads the weather based on the passed parameters
@@ -163,6 +170,25 @@ public class WeatherFragment extends Fragment {
         }
     }
 
+    @OnClick(R.id.weatherText)
+    public void convertTemp(){
+        String tempString = "";
+        if(currentUnit == 'c'){
+            tempString = ((currentTemp * (9/5)+32)) + " °F";
+            currentUnit = 'f';
+        }
+        else if(currentUnit == 'f'){
+            tempString = (currentTemp + 273) + " °K";
+            currentUnit = 'k';
+        }
+        else{
+            tempString = currentTemp + " °C";
+            currentUnit = 'c';
+        }
+
+        weatherText.setText(tempString);
+    }
+
     /**
      * Parses the result from downloadWeather into revelant fields and updates the UI
      * @param jsonResult The json result returend by the query from downloadWeather
@@ -171,10 +197,16 @@ public class WeatherFragment extends Fragment {
     private void parseAndupdateUI(String jsonResult){
         Gson gson = new Gson();
         weather = gson.fromJson(jsonResult, WeatherObj.class);
+        currentTemp = weather.getMain().getTemp().intValue();
+        String tempString = "";
 
-        weatherText.setText(Integer.toString((weather.getMain().getTemp().intValue())) + " °C");
-        //maxTemp.setText(" ▴" + Integer.toString((weather.getMain().getTempMax().intValue())) + "°C");
-        //minTemp.setText(" ▾" + Integer.toString((weather.getMain().getTempMin().intValue())) + "°C");
+        if(currentUnit == 'c')
+            tempString = currentTemp + " °C";
+        else if(currentUnit == 'f')
+            tempString = ((currentTemp * (9/5)+32)) + " °F";
+        else
+            tempString = (currentTemp + 273.15) + " °K";
+        weatherText.setText(tempString);
         humidity.setText("Humidity: " + (Double.toString((weather.getMain().getHumidity().doubleValue())))+" %");
         pressure.setText("Pressure: " + (Double.toString((weather.getMain().getPressure().doubleValue()))) + " hpa");
         last_updated.setText("Last Updated: " + new SimpleDateFormat(("K:mm a, z")).format(new Date(last_checked)));
