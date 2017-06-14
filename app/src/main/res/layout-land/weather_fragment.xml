@@ -21,7 +21,7 @@
         app:srcCompat="?android:attr/textCheckMark"
         tools:text="?"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="-53dp"
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="parent"
         android:layout_marginRight="8dp"
@@ -101,17 +101,17 @@
             android:id="@+id/last_update"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/pressure"
             android:layout_marginTop="10dp"
             android:gravity="center"
             android:textAlignment="center"
             android:textColor="@color/textColorPrimary"
-            android:textSize="10sp"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:srcCompat="?android:attr/textCheckMark"
-            tools:text="Last updated:"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/pressure" />
+            tools:text="Last updated:" />
 
 
     </RelativeLayout>
