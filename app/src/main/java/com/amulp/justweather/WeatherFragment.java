@@ -3,6 +3,7 @@ package com.amulp.justweather;
 import android.Manifest;
 import android.content.Context;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.support.v4.app.Fragment;
 import android.content.pm.PackageManager;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.amulp.justweather.data.Temperature;
 import com.google.gson.Gson;
 import com.amulp.justweather.data.WeatherObj;
 import com.amulp.justweather.modules.DownloadTask;
@@ -35,17 +38,18 @@ import static android.support.v4.content.PermissionChecker.checkSelfPermission;
  * @author Amul Pokharel
  */
 
-public class WeatherFragment extends Fragment {
+public class WeatherFragment extends Fragment implements LocationListener {
 
     private WeatherObj weather;
     private String icon = "";
-    private int currentTemp = 0;
+    private Temperature currentTemp;
     private char currentUnit = 'c';
     private static Handler handler = new Handler();
     private final int LOCATION_GRANTED = 2;
     private boolean permission_checked;
     private long last_checked;
     private final long CHECK_INTERVAL = 60000;
+    private Location loc;
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
@@ -75,11 +79,12 @@ public class WeatherFragment extends Fragment {
             last_updated.setText(savedInstanceState.getString("last update"));
             locationName.setText(savedInstanceState.getString("location"));
             currentUnit = savedInstanceState.getChar("current unit", 'c');
-            currentTemp = savedInstanceState.getInt("current temp", 0);
+            currentTemp.setTemp(savedInstanceState.getInt("current temp", 0));
         }
         else{
             permission_checked = false;
             last_checked = 0;
+            currentTemp = new Temperature();
         }
         handler.postDelayed(weatherUpdateThread, 0L);
         return view;
@@ -100,7 +105,7 @@ public class WeatherFragment extends Fragment {
         outState.putString("pressure", pressure.getText().toString());
         outState.putString("last update", last_updated.getText().toString());
         outState.putString("location", locationName.getText().toString());
-        outState.putInt("current temp", currentTemp);
+        outState.putInt("current temp", currentTemp.inCelsius());
         outState.putChar("current unit", currentUnit);
 
         super.onSaveInstanceState(outState);
@@ -126,20 +131,15 @@ public class WeatherFragment extends Fragment {
      * Updates the location after getting the location information.
      */
     public void updateLocation(){
-
-        double lng = 0;
-        double lat = 0;
-
         if ((!permission_checked) || ((checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED))){
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
         }
         else{
             LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
-            Location loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
+            loc = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-            lng = loc.getLongitude();
-            lat = loc.getLatitude();
-            downloadWeather(lat, lng);
+            downloadWeather(loc.getLatitude(), loc.getLongitude());
         }
     }
 
@@ -174,15 +174,15 @@ public class WeatherFragment extends Fragment {
     public void convertTemp(){
         String tempString = "";
         if(currentUnit == 'c'){
-            tempString = ((currentTemp * (9/5)+32)) + " °F";
+            tempString = currentTemp.inFahrenheit() + " °F";
             currentUnit = 'f';
         }
         else if(currentUnit == 'f'){
-            tempString = (currentTemp + 273) + " °K";
+            tempString = currentTemp.inKelvin() +  " °K";
             currentUnit = 'k';
         }
         else{
-            tempString = currentTemp + " °C";
+            tempString = currentTemp.inCelsius() + " °C";
             currentUnit = 'c';
         }
 
@@ -197,18 +197,18 @@ public class WeatherFragment extends Fragment {
     private void parseAndupdateUI(String jsonResult){
         Gson gson = new Gson();
         weather = gson.fromJson(jsonResult, WeatherObj.class);
-        currentTemp = weather.getMain().getTemp().intValue();
+        currentTemp = new Temperature(weather.getMain().getTemp());
         String tempString = "";
 
         if(currentUnit == 'c')
-            tempString = currentTemp + " °C";
+            tempString = currentTemp.inCelsius() + " °C";
         else if(currentUnit == 'f')
-            tempString = ((currentTemp * (9/5)+32)) + " °F";
+            tempString = currentTemp.inFahrenheit() + " °F";
         else
-            tempString = (currentTemp + 273.15) + " °K";
+            tempString = currentTemp.inKelvin() + " °K";
         weatherText.setText(tempString);
-        humidity.setText("Humidity: " + (Double.toString((weather.getMain().getHumidity().doubleValue())))+" %");
-        pressure.setText("Pressure: " + (Double.toString((weather.getMain().getPressure().doubleValue()))) + " hpa");
+        humidity.setText("Humidity: " + (weather.getMain().getHumidity()) +" %");
+        pressure.setText("Pressure: " + (weather.getMain().getPressure()) + " hpa");
         last_updated.setText("Last Updated: " + new SimpleDateFormat(("K:mm a, z")).format(new Date(last_checked)));
         locationName.setText(weather.getName());
 
@@ -248,4 +248,24 @@ public class WeatherFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        Log.d("debug", "locatiion failed?");
+        //downloadWeather( location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
