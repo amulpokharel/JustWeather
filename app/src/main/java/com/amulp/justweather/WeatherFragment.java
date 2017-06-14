@@ -2,6 +2,7 @@ package com.amulp.justweather;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -50,6 +51,10 @@ public class WeatherFragment extends Fragment implements LocationListener {
     private long last_checked;
     private final long CHECK_INTERVAL = 60000;
     private Location loc;
+    private SharedPreferences sharedPref;
+    private SharedPreferences.Editor editor;
+
+
 
     @BindView(R.id.weatherIcon) TextView iconView;
     @BindView(R.id.weatherText) TextView weatherText;
@@ -69,6 +74,11 @@ public class WeatherFragment extends Fragment implements LocationListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.weather_fragment, container, false);
         ButterKnife.bind(this, view);
+        sharedPref  = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editor = sharedPref.edit();
+
+        currentUnit = sharedPref.getString("current temp", "c").charAt(0);
+
         iconView.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "fonts/weather.ttf"));
         if(savedInstanceState != null){
             permission_checked = savedInstanceState.getBoolean("permission check", false);
@@ -109,6 +119,12 @@ public class WeatherFragment extends Fragment implements LocationListener {
         outState.putChar("current unit", currentUnit);
 
         super.onSaveInstanceState(outState);
+    }
+
+    public void onPause(){
+        super.onPause();
+        editor.putString("current temp", Character.toString(currentUnit));
+        editor.commit();
     }
 
 
