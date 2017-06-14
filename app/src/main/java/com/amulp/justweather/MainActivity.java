@@ -29,7 +29,20 @@ public class MainActivity extends FragmentActivity {
             fm.beginTransaction().replace(R.id.mainFrame, weather_frag, SAVED_WEATHER).commit();
         }
 
+        hideUI();
+    }
 
+    public void onResume(){
+        super.onResume();
+
+        hideUI();
+    }
+
+    public void onSaveInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+    }
+
+    private void hideUI(){
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -37,10 +50,6 @@ public class MainActivity extends FragmentActivity {
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                         | View.SYSTEM_UI_FLAG_FULLSCREEN
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-    }
-
-    public void onSaveInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
     }
 
 }
