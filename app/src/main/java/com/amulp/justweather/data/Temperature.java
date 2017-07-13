@@ -37,7 +37,7 @@ public class Temperature {
 
     //fahrenheit
     public int inFahrenheit(){
-        return (int)((tempInC * (9/5)+32));
+        return (int)((tempInC * (9.0/5.0))+32.0);
     }
 
     //kelvin
