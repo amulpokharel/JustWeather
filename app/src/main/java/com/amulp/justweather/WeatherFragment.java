@@ -147,8 +147,8 @@ public class WeatherFragment extends Fragment implements LocationListener {
      * Updates the location after getting the location information.
      */
     public void updateLocation(){
-        if ((!permission_checked) || ((checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED))){
-            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, LOCATION_GRANTED);
+        if ((!permission_checked) || ((checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED))){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_GRANTED);
         }
         else{
             LocationManager locationManager = (LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
