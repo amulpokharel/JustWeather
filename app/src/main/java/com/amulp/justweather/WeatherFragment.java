@@ -100,6 +100,7 @@ public class WeatherFragment extends Fragment implements LocationListener {
         return view;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,7 +168,8 @@ public class WeatherFragment extends Fragment implements LocationListener {
      * @param lng Longitude for acquiring weather
      */
     private void downloadWeather(double lat, double lng){
-        String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat) + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
+        String urlText = "http://api.openweathermap.org/data/2.5/weather?lat=" + Double.toString(lat)
+                + "&lon=" + Double.toString(lng) + "&appid=50aaa0b9c38198d17df8b2140f09879e&units=metric";
 
         Log.i("URL", urlText);
 
